@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
+import schoolLogo from '@/assets/school-logo.png';
 
 const navLinks = [
   { name: 'Home', path: '/' },
@@ -20,6 +21,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16 md:h-20">
           <Link to="/" className="flex items-center gap-3">
+            <img src={schoolLogo} alt="NMSS Logo" className="w-10 h-10 md:w-12 md:h-12 rounded-full" />
             <motion.div
               className="text-xl md:text-2xl font-display font-bold neon-text"
               whileHover={{ scale: 1.05 }}

@@ -14,7 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      registrations: {
+        Row: {
+          class: string | null
+          created_at: string
+          email: string
+          event_type: string
+          id: string
+          leader_contact: string
+          leader_name: string
+          member_2: string | null
+          member_3: string | null
+          member_4: string | null
+          payment_screenshot_url: string | null
+          school: string | null
+          sub_event: string | null
+          team_name: string | null
+        }
+        Insert: {
+          class?: string | null
+          created_at?: string
+          email: string
+          event_type: string
+          id?: string
+          leader_contact: string
+          leader_name: string
+          member_2?: string | null
+          member_3?: string | null
+          member_4?: string | null
+          payment_screenshot_url?: string | null
+          school?: string | null
+          sub_event?: string | null
+          team_name?: string | null
+        }
+        Update: {
+          class?: string | null
+          created_at?: string
+          email?: string
+          event_type?: string
+          id?: string
+          leader_contact?: string
+          leader_name?: string
+          member_2?: string | null
+          member_3?: string | null
+          member_4?: string | null
+          payment_screenshot_url?: string | null
+          school?: string | null
+          sub_event?: string | null
+          team_name?: string | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
