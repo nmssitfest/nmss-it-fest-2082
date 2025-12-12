@@ -140,6 +140,16 @@ const Events = () => {
         throw new Error(errorMessage);
       }
 
+      // Additional validation for required members based on event type
+      if (selectedEvent?.id === 'hackathon' && !validationData.member2?.trim()) {
+        throw new Error('Member 2 is required for Hackathon');
+      }
+      if ((selectedEvent?.id === 'freefire' || selectedEvent?.id === 'pubg')) {
+        if (!validationData.member2?.trim()) throw new Error('Member 2 is required');
+        if (!validationData.member3?.trim()) throw new Error('Member 3 is required');
+        if (!validationData.member4?.trim()) throw new Error('Member 4 is required');
+      }
+
       let paymentScreenshotUrl = null;
 
       // Upload payment screenshot if required
@@ -206,26 +216,41 @@ const Events = () => {
     }
   };
 
-  const getFieldLabel = (field: string) => {
+  const getFieldLabel = (field: string, eventId?: string) => {
     const labels: { [key: string]: string } = {
       teamName: 'Team Name',
       leaderName: 'Team Leader Name',
       leaderContact: 'Leader Contact No.',
       email: 'Email Address',
-      member2: 'Member 2 (Optional)',
-      member3: 'Member 3 (Optional)',
-      member4: 'Member 4 (Optional)',
+      member2: 'Member 2',
+      member3: 'Member 3',
+      member4: 'Member 4',
       fullName: 'Full Name',
       contact: 'Contact No.',
       school: 'School Name',
       class: 'Class',
       paymentProof: 'Payment Screenshot',
     };
-    return labels[field] || field;
+    const label = labels[field] || field;
+    
+    // Add (Optional) suffix for non-required member fields
+    if (['member2', 'member3', 'member4'].includes(field) && !isRequired(field, eventId)) {
+      return `${label} (Optional)`;
+    }
+    return label;
   };
 
-  const isRequired = (field: string) => {
-    return ['teamName', 'leaderName', 'leaderContact', 'email', 'fullName', 'contact', 'school', 'class'].includes(field);
+  const isRequired = (field: string, eventId?: string) => {
+    const alwaysRequired = ['teamName', 'leaderName', 'leaderContact', 'email', 'fullName', 'contact', 'school', 'class'];
+    if (alwaysRequired.includes(field)) return true;
+    
+    // Hackathon: member2 required
+    if (eventId === 'hackathon' && field === 'member2') return true;
+    
+    // Free Fire & PUBG: all members required
+    if ((eventId === 'freefire' || eventId === 'pubg') && ['member2', 'member3', 'member4'].includes(field)) return true;
+    
+    return false;
   };
 
   return (
@@ -350,16 +375,16 @@ const Events = () => {
                 {selectedEvent.fields.map((field) => (
                   <div key={field}>
                     <label className="block text-sm font-medium text-foreground mb-2">
-                      {getFieldLabel(field)}
-                      {isRequired(field) && <span className="text-destructive ml-1">*</span>}
+                      {getFieldLabel(field, selectedEvent.id)}
+                      {isRequired(field, selectedEvent.id) && <span className="text-destructive ml-1">*</span>}
                     </label>
                     <input
                       type={field === 'email' ? 'email' : field.includes('contact') || field.includes('Contact') ? 'tel' : 'text'}
-                      required={isRequired(field)}
+                      required={isRequired(field, selectedEvent.id)}
                       value={(formData[field] as string) || ''}
                       onChange={(e) => handleInputChange(field, e.target.value)}
                       className="w-full px-4 py-3 rounded-lg bg-input border border-border focus:border-primary focus:ring-1 focus:ring-primary outline-none transition-all text-foreground placeholder:text-muted-foreground"
-                      placeholder={`Enter ${getFieldLabel(field).toLowerCase()}`}
+                      placeholder={`Enter ${getFieldLabel(field, selectedEvent.id).toLowerCase().replace(' (optional)', '')}`}
                     />
                   </div>
                 ))}
