@@ -5,7 +5,28 @@ import Footer from '@/components/Footer';
 import { Code, Gamepad2, Palette, Keyboard, Terminal, Trophy, Users, Banknote, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
+import { z } from 'zod';
 
+// Validation schema for registration form
+const registrationSchema = z.object({
+  email: z.string().trim().email('Invalid email address').max(255, 'Email too long'),
+  leaderName: z.string().trim().min(1, 'Name is required').max(100, 'Name too long').optional(),
+  fullName: z.string().trim().min(1, 'Name is required').max(100, 'Name too long').optional(),
+  leaderContact: z.string().trim().regex(/^[0-9]{10}$/, 'Contact must be 10 digits').optional(),
+  contact: z.string().trim().regex(/^[0-9]{10}$/, 'Contact must be 10 digits').optional(),
+  teamName: z.string().trim().max(100, 'Team name too long').optional(),
+  member2: z.string().trim().max(100, 'Name too long').optional(),
+  member3: z.string().trim().max(100, 'Name too long').optional(),
+  member4: z.string().trim().max(100, 'Name too long').optional(),
+  school: z.string().trim().max(200, 'School name too long').optional(),
+  class: z.string().trim().max(50, 'Class too long').optional(),
+}).refine(data => data.leaderName || data.fullName, {
+  message: 'Name is required',
+}).refine(data => data.leaderContact || data.contact, {
+  message: 'Contact number is required',
+});
+
+const MAX_FILE_SIZE = 500 * 1024; // 500KB
 const events = [
   {
     id: 'hackathon',
@@ -98,11 +119,38 @@ const Events = () => {
     setIsSubmitting(true);
 
     try {
+      // Validate form data with zod schema
+      const validationData = {
+        email: formData.email as string,
+        leaderName: formData.leaderName as string | undefined,
+        fullName: formData.fullName as string | undefined,
+        leaderContact: formData.leaderContact as string | undefined,
+        contact: formData.contact as string | undefined,
+        teamName: formData.teamName as string | undefined,
+        member2: formData.member2 as string | undefined,
+        member3: formData.member3 as string | undefined,
+        member4: formData.member4 as string | undefined,
+        school: formData.school as string | undefined,
+        class: formData.class as string | undefined,
+      };
+
+      const validationResult = registrationSchema.safeParse(validationData);
+      if (!validationResult.success) {
+        const errorMessage = validationResult.error.errors[0]?.message || 'Invalid form data';
+        throw new Error(errorMessage);
+      }
+
       let paymentScreenshotUrl = null;
 
       // Upload payment screenshot if required
       if (selectedEvent?.requiresPayment && formData.paymentProof) {
         const file = formData.paymentProof as File;
+        
+        // Validate file size (500KB max)
+        if (file.size > MAX_FILE_SIZE) {
+          throw new Error('Payment screenshot must be less than 500KB');
+        }
+        
         const fileExt = file.name.split('.').pop();
         const fileName = `${selectedEvent.id}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
 
@@ -122,19 +170,19 @@ const Events = () => {
       // Determine sub-event for esports
       const subEvent = selectedEvent?.category === 'Esports' ? selectedEvent.name : null;
 
-      // Insert registration data
+      // Insert registration data with validated values
       const { error: insertError } = await supabase.from('registrations').insert({
         event_type: selectedEvent?.id || '',
         sub_event: subEvent,
-        team_name: (formData.teamName as string) || null,
-        leader_name: (formData.leaderName || formData.fullName) as string,
-        leader_contact: (formData.leaderContact || formData.contact) as string,
-        email: formData.email as string,
-        member_2: (formData.member2 as string) || null,
-        member_3: (formData.member3 as string) || null,
-        member_4: (formData.member4 as string) || null,
-        school: (formData.school as string) || null,
-        class: (formData.class as string) || null,
+        team_name: validationResult.data.teamName || null,
+        leader_name: (validationResult.data.leaderName || validationResult.data.fullName) as string,
+        leader_contact: (validationResult.data.leaderContact || validationResult.data.contact) as string,
+        email: validationResult.data.email,
+        member_2: validationResult.data.member2 || null,
+        member_3: validationResult.data.member3 || null,
+        member_4: validationResult.data.member4 || null,
+        school: validationResult.data.school || null,
+        class: validationResult.data.class || null,
         payment_screenshot_url: paymentScreenshotUrl,
       });
 
