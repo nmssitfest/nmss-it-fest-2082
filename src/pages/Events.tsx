@@ -69,6 +69,7 @@ const events = [
     icon: Palette,
     entryFee: 0,
     prize: 5000,
+    prizeLabel: 'Rewards worth up to NRs. 5000 (to be announced)',
     description: 'Unleash your creativity and design stunning visuals on given themes.',
     teamSize: 'Individual',
     fields: ['fullName', 'contact', 'email', 'school', 'class'],
@@ -80,6 +81,7 @@ const events = [
     icon: Terminal,
     entryFee: 0,
     prize: 3000,
+    prizeLabel: 'Rewards worth up to NRs. 3000 (to be announced)',
     description: 'Create interactive stories, games, and animations using Scratch.',
     teamSize: 'Individual',
     fields: ['fullName', 'contact', 'email', 'school', 'class'],
@@ -91,6 +93,7 @@ const events = [
     icon: Keyboard,
     entryFee: 0,
     prize: 3000,
+    prizeLabel: 'Rewards worth up to NRs. 3000 (to be announced)',
     description: 'Test your typing speed and accuracy in this exciting competition.',
     teamSize: 'Individual',
     fields: ['fullName', 'contact', 'email', 'school', 'class'],
@@ -317,8 +320,8 @@ const Events = () => {
                       <Trophy size={14} />
                       Prize Pool
                     </div>
-                    <p className="font-display font-bold text-gradient">
-                      NRs. {event.prize.toLocaleString()}
+                    <p className="font-display font-bold text-gradient text-sm">
+                      {event.prizeLabel || `NRs. ${event.prize.toLocaleString()}`}
                     </p>
                   </div>
                 </div>
