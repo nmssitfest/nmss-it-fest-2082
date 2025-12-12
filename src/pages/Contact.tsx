@@ -4,6 +4,15 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Mail, Phone, MapPin, Send, Facebook, Instagram, ExternalLink } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { z } from 'zod';
+
+// Validation schema for contact form
+const contactSchema = z.object({
+  name: z.string().trim().min(1, 'Name is required').max(100, 'Name must be less than 100 characters'),
+  email: z.string().trim().email('Invalid email address').max(255, 'Email must be less than 255 characters'),
+  subject: z.string().trim().min(1, 'Subject is required').max(200, 'Subject must be less than 200 characters'),
+  message: z.string().trim().min(1, 'Message is required').max(2000, 'Message must be less than 2000 characters'),
+});
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +29,13 @@ const Contact = () => {
     setIsSubmitting(true);
 
     try {
+      // Validate form data with zod schema
+      const validationResult = contactSchema.safeParse(formData);
+      if (!validationResult.success) {
+        const errorMessage = validationResult.error.errors[0]?.message || 'Invalid form data';
+        throw new Error(errorMessage);
+      }
+
       const response = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: {
@@ -27,7 +43,7 @@ const Contact = () => {
         },
         body: JSON.stringify({
           access_key: 'ad511ab9-16e6-476e-bb2d-6c0dc3deb12e',
-          ...formData,
+          ...validationResult.data,
         }),
       });
 
@@ -40,10 +56,10 @@ const Contact = () => {
       } else {
         throw new Error('Failed to send message');
       }
-    } catch {
+    } catch (error) {
       toast({
         title: 'Error',
-        description: 'Failed to send message. Please try again.',
+        description: error instanceof Error ? error.message : 'Failed to send message. Please try again.',
         variant: 'destructive',
       });
     }
