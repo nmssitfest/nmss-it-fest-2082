@@ -4,6 +4,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Code, Gamepad2, Palette, Keyboard, Terminal, Trophy, Users, Banknote, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
 
 const events = [
   {
@@ -96,17 +97,65 @@ const Events = () => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    // Simulate submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
+    try {
+      let paymentScreenshotUrl = null;
 
-    toast({
-      title: 'Registration Submitted!',
-      description: 'We will inform you via email about your registration status.',
-    });
+      // Upload payment screenshot if required
+      if (selectedEvent?.requiresPayment && formData.paymentProof) {
+        const file = formData.paymentProof as File;
+        const fileExt = file.name.split('.').pop();
+        const fileName = `${selectedEvent.id}/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
 
-    setSelectedEvent(null);
-    setFormData({});
-    setIsSubmitting(false);
+        const { error: uploadError, data: uploadData } = await supabase.storage
+          .from('payment-screenshots')
+          .upload(fileName, file);
+
+        if (uploadError) throw uploadError;
+
+        const { data: urlData } = supabase.storage
+          .from('payment-screenshots')
+          .getPublicUrl(fileName);
+
+        paymentScreenshotUrl = urlData.publicUrl;
+      }
+
+      // Determine sub-event for esports
+      const subEvent = selectedEvent?.category === 'Esports' ? selectedEvent.name : null;
+
+      // Insert registration data
+      const { error: insertError } = await supabase.from('registrations').insert({
+        event_type: selectedEvent?.id || '',
+        sub_event: subEvent,
+        team_name: (formData.teamName as string) || null,
+        leader_name: (formData.leaderName || formData.fullName) as string,
+        leader_contact: (formData.leaderContact || formData.contact) as string,
+        email: formData.email as string,
+        member_2: (formData.member2 as string) || null,
+        member_3: (formData.member3 as string) || null,
+        member_4: (formData.member4 as string) || null,
+        school: (formData.school as string) || null,
+        class: (formData.class as string) || null,
+        payment_screenshot_url: paymentScreenshotUrl,
+      });
+
+      if (insertError) throw insertError;
+
+      toast({
+        title: 'Registration Submitted!',
+        description: 'We will inform you via email about your registration status.',
+      });
+
+      setSelectedEvent(null);
+      setFormData({});
+    } catch (error: any) {
+      toast({
+        title: 'Registration Failed',
+        description: error.message || 'Please try again later.',
+        variant: 'destructive',
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const getFieldLabel = (field: string) => {
