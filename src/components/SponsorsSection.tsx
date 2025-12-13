@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 const sponsors = [
   { name: 'DishHome', logo: 'https://www.ids-digital.de/wp-content/uploads/2025/06/DHGO.png' },
   { name: 'Adhyaapan', logo: 'https://i.ibb.co/4ZBSzb3C/adhyaapan-logo.png' },
-  { name: 'All in One Solution', logo: 'https://i.ibb.co/6RNZ303R/all-in-one-solution.jpg' },
+  { name: 'All in One Solution', logo: 'https://i.ibb.co/KcJSNRmJ/all-in-one-solution.png' },
 ];
 
 const SponsorsSection = () => {
