@@ -96,8 +96,8 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.5 }}
             className="text-lg md:text-xl text-muted-foreground mb-10 max-w-2xl mx-auto"
           >
-            Join Nepal's premier school tech event featuring Hackathon, Esports, 
-            Programming challenges, and more!
+            NMSS IT Fest 2082 - 
+            Tech challenges, esports, and more—designed for Chitwan’s brightest students.
           </motion.p>
 
           {/* CTA Buttons */}
@@ -118,10 +118,6 @@ const HeroSection = () => {
 
         {/* Scroll Indicator */}
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
-          className="absolute bottom-6 left-1/2 -translate-x-1/2"
         >
           <motion.div
             animate={{ y: [0, 10, 0] }}
