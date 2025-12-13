@@ -4,7 +4,7 @@ import { ChevronDown, Sparkles, Trophy } from 'lucide-react';
 
 const HeroSection = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center hero-gradient grid-bg overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center hero-gradient grid-bg overflow-hidden pb-24">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 overflow-hidden">
         <motion.div
@@ -121,14 +121,13 @@ const HeroSection = () => {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2 }}
-          className="absolute bottom-10 left-1/2 -translate-x-1/2"
+          className="absolute bottom-6 left-1/2 -translate-x-1/2"
         >
           <motion.div
             animate={{ y: [0, 10, 0] }}
             transition={{ duration: 2, repeat: Infinity }}
             className="flex flex-col items-center gap-2 text-muted-foreground"
           >
-            <span className="text-sm">Scroll Down</span>
             <ChevronDown className="w-5 h-5" />
           </motion.div>
         </motion.div>
