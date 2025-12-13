@@ -9,7 +9,7 @@ const schedule = [
     date: 'December 25, 2025',
     events: [
       { time: '8:30 AM', activity: 'Hackathon Kick-off', description: 'Opening ceremony and theme reveal' },
-      { time: '9:00 AM', activity: 'Hackathon Begins', description: '24-hour coding marathon starts' },
+      { time: '9:00 AM', activity: 'Hackathon Begins', description: '12-hour coding marathon starts' },
       { time: '10:30 AM', activity: 'E-sports Qualifying Rounds', description: 'Free Fire & PUBG qualifiers' },
     ],
   },

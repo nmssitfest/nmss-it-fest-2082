@@ -7,7 +7,7 @@ const events = [
     name: 'Hackathon',
     icon: Code,
     prize: '18,000',
-    description: '24-hour coding marathon',
+    description: '12-hour coding marathon',
   },
   {
     name: 'Esports',
