@@ -34,7 +34,7 @@ const events = [
     icon: Code,
     entryFee: 1000,
     prize: 18000,
-    description: 'A 24-hour coding marathon where teams build innovative solutions to real-world problems.',
+    description: 'A 12-hour coding marathon where teams build innovative solutions to real-world problems.',
     teamSize: '2-4 members',
     fields: ['teamName', 'leaderName', 'leaderContact', 'email', 'member2', 'member3', 'member4'],
     requiresPayment: true,

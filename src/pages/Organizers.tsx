@@ -29,15 +29,6 @@ const organizers = [
     ],
   },
   {
-    category: 'Teacher Organizing Committee',
-    icon: User,
-    members: [
-      { name: 'Deepak Tiwari', role: 'Faculty Advisor' },
-      { name: 'Chandra Kunwar', role: 'Faculty Advisor' },
-      { name: 'Sandesh Adhikari', role: 'Faculty Advisor' },
-    ],
-  },
-  {
     category: 'Hackathon Team',
     icon: User,
     members: [

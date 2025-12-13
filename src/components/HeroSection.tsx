@@ -80,7 +80,7 @@ const HeroSection = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
             className="inline-flex items-center gap-3 glass-card-hover px-6 py-4 rounded-2xl mb-8"
           >
-            <Trophy className="w-8 h-8 text-primary animate-pulse-glow" />
+            <Trophy className="w-8 h-8 text-primary" />
             <div className="text-left">
               <p className="text-sm text-muted-foreground">Total Prize Pool</p>
               <p className="text-2xl md:text-3xl font-display font-bold text-gradient">
