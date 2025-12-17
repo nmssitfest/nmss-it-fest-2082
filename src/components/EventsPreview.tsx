@@ -28,11 +28,17 @@ const events = [
     description: 'Speed & accuracy',
   },
   {
-    name: 'Scratch',
+    name: 'Scratch Programming',
     icon: Terminal,
     prize: '3,000',
     description: 'Block programming',
   },
+  {
+    name: 'CSS Battle',
+    icon: Terminal,
+    prize: '3,000',
+    description: 'Style it right',
+  }
 ];
 
 const EventsPreview = () => {

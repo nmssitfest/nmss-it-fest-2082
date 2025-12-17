@@ -20,12 +20,12 @@ const organizers = [
     category: 'Core Organizing Team',
     icon: Users,
     members: [
-      { name: 'Anmol Kapri', role: 'Event Chief' },
       { name: 'Rohan Paudel', role: 'Assistant Coordinator' },
       { name: 'Prakhyat Tiwari', role: 'Event Manager' },
-      { name: 'Rahul Sharma', role: 'Finance & Registration Head' },
-      { name: 'Sushant Pokhrel', role: 'PR & Communication Head' },
-      { name: 'Sujaina Khatun', role: 'Anchoring' },
+      { name: 'Rahul Sharma', role: 'Finance & Registration' },
+      { name: 'Sushant Pokhrel', role: 'PR & Communication' },
+      { name: 'Swikriti Battarai', role: 'Anchoring' },
+      { name: 'Aashish Paudel', role: 'Anchoring' }
     ],
   },
   {
@@ -49,7 +49,7 @@ const organizers = [
     category: 'Scratch Programming Team',
     icon: User,
     members: [
-      { name: 'Aashish Paudel', role: 'Scratch Event Lead' },
+      { name: 'Binamra Sapkota', role: 'Scratch Event Lead' },
       { name: 'Sabina Shrestha', role: 'Evaluation & Support Coordinator' },
     ],
   },
