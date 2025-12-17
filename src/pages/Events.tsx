@@ -102,7 +102,7 @@ const events = [
   {
     id: 'cssbattle',
     name: 'CSS Battle',
-    icon: Keyboard,
+    icon: Terminal,
     entryFee: 0,
     prize: 3000,
     prizeLabel: 'Rewards worth up to NRs. 3000.',
